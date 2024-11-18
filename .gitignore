@@ -5,3 +5,15 @@ compiled/
 *.bak
 \#*
 .\#*
+.*
+#*
+~*
+*#
+*.fasl
+*.FASL
+*.lisp-temp
+*.~undo-tree
+*sync-conflict*
+tmp
+template*
+input*.txt
