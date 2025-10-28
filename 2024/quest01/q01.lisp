@@ -7,7 +7,6 @@
 ;; Prologue code for setup - same every day
 ;; ----------------------------------------------------------------------------
 
-
 ;; (ql:quickload '(:fiveam :iterate :cl-ppcre :trivia :serapeum :str))
 ;; (use-package :iterate) ; use iter instead of LOOP
 
@@ -26,7 +25,7 @@
 (declaim (optimize (debug 3)))       ; max debugging info
 ;; (declaim (optimize (speed 3))     ; max speed if needed
 
-(defparameter *data-file* "~/cl/ec/2024/quest01/input.txt"
+(defparameter *data-file1* "~/cl/ec/2024/quest01/input1.txt"
   "Downloaded problem set")
 (defparameter *data-file2* "~/cl/ec/2024/quest01/input2.txt"
   "Downloaded problem set")
@@ -51,7 +50,7 @@ Pretty simple. Refactored to extract POTIONS-NEEDED for parts 2 & 3
 
 ---------------------------------------------------------------------------- |#
 
-(defparameter *example* "ABBAC")
+(defparameter *example1* "ABBAC")
 
 (defun potions-needed (bug)
   "given a bug return the number of potions needed to defeat it"
@@ -69,7 +68,7 @@ Pretty simple. Refactored to extract POTIONS-NEEDED for parts 2 & 3
     (summing (potions-needed c))))
 
 (5a:test q01-1-test
-  (5a:is (= (q01-1 *example*) 5)))
+  (5a:is (= (q01-1 *example1*) 5)))
 
 #| ----------------------------------------------------------------------------
 --- Part Two ---
@@ -165,7 +164,7 @@ defeat them all"
 
 ;; now solve the puzzle!
 (time (format t "The answer to EC Quest 01 Part 1 is ~a"
-              (q01-1 (uiop:read-file-string *data-file*))))
+              (q01-1 (uiop:read-file-string *data-file1*))))
 
 (time (format t "The answer to EC Quest 01 Part 2 is ~a"
 	      (q01-2 (uiop:read-file-string *data-file2*))))
@@ -180,13 +179,22 @@ defeat them all"
 ;; The answer to EC Quest 01 Part 1 is 1322
 ;; Evaluation took:
 ;; 0.000 seconds of real time
-;; 0.000105 seconds of total run time (0.000052 user, 0.000053 system)
+;; 0.000136 seconds of total run time (0.000077 user, 0.000059 system)
 ;; 100.00% CPU
-;; 0 bytes consed
+;; 54,000 bytes consed
 
 ;; The answer to EC Quest 01 Part 2 is 5584
 ;; Evaluation took:
 ;; 0.000 seconds of real time
-;; 0.000139 seconds of total run time (0.000094 user, 0.000045 system)
+;; 0.000181 seconds of total run time (0.000116 user, 0.000065 system)
 ;; 100.00% CPU
-;; 123,872 bytes consed
+;; 111,120 bytes consed
+
+;; The answer to EC Quest 01 Part 3 is 27848
+;; Evaluation took:
+;; 0.003 seconds of real time
+;; 0.003470 seconds of total run time (0.003061 user, 0.000409 system)
+;; [ Real times consist of 0.002 seconds GC time, and 0.001 seconds non-GC time. ]
+;; [ Run times consist of 0.002 seconds GC time, and 0.002 seconds non-GC time. ]
+;; 100.00% CPU
+;; 446,624 bytes consed
