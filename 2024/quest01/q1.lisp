@@ -7,9 +7,11 @@
 ;; Prologue code for setup - same every day
 ;; ----------------------------------------------------------------------------
 
+;; Pre-loaded in .sbclrc:
 ;; (ql:quickload '(:fiveam :iterate :cl-ppcre :trivia :serapeum :str))
+;; (use-package :iterate) ; use iter instead of LOOP
 
-(defpackage :ec.2024.quest01
+(defpackage :quest01
   (:use  #:cl :alexandria :iterate)
   (:local-nicknames
    (:re :cl-ppcre)       ; regex
@@ -17,14 +19,14 @@
    (:tr :trivia)         ; pattern matching
    (:5a :fiveam)))       ; testing framework
 
-(in-package :ec.2024.quest01)
+(in-package :quest01)
 
 (setf 5a:*run-test-when-defined* t)  ; test as we go
 (sr:toggle-pretty-print-hash-table)  ; pretty print for hashes
 (declaim (optimize (debug 3)))       ; max debugging info
 ;; (declaim (optimize (speed 3))     ; max speed if needed
 
-(defparameter *data-file1* "~/cl/ec/2024/quest01/input1.txt"
+(defparameter *data-file* "~/cl/ec/2024/quest01/input.txt"
   "Downloaded problem set")
 (defparameter *data-file2* "~/cl/ec/2024/quest01/input2.txt"
   "Downloaded problem set")
@@ -49,7 +51,7 @@ Pretty simple. Refactored to extract POTIONS-NEEDED for parts 2 & 3
 
 ---------------------------------------------------------------------------- |#
 
-(defparameter *example1* "ABBAC")
+(defparameter *example* "ABBAC")
 
 (defun potions-needed (bug)
   "given a bug return the number of potions needed to defeat it"
@@ -67,29 +69,27 @@ Pretty simple. Refactored to extract POTIONS-NEEDED for parts 2 & 3
     (summing (potions-needed c))))
 
 (5a:test q01-1-test
-  (5a:is (= (q01-1 *example1*) 5)))
+  (5a:is (= (q01-1 *example*) 5)))
 
 #| ----------------------------------------------------------------------------
 --- Part Two ---
 
-Round two begins! A new area awaits, bringing with it a new list of
-foes, and a familiar but formidable opponent:
+Adding Diabolical Dragonfly (D):  5
 
-Diabolical Dragonfly (D): A fast and tricky enemy, hard to hit. This
-creature requires 5 potions to defeat it.
-
-This time, however, the battles become more challenging. According to
-the kingdom's spies, the enemies sometimes join forces in pairs,
-making them tougher to defeat.  When two monsters pair up, you will
-need one more potion per creature than in a one-on-one fight.
+Also the enemies sometimes join forces in pairs. When two monsters
+pair up, you will need one more potion per creature than in a
+one-on-one fight.
 
 AxBCDDCAxD = 28
 
 What is the exact number of potions you need to order for round two?
 
-LEO'S NOTES: 1) turn the string into a list of character pairs 2) go
-through the list pairwise using the new rules (adding 2 to the potion
-count when the bugs pair up, x is 0, D is 5)
+LEO'S NOTES:
+
+1) turn the string into a list of character pairs
+
+2) go through the list pairwise using the new rules (adding 2 to the
+potion count when the bugs pair up, x is 0, D is 5)
 
 ---------------------------------------------------------------------------- |#
 
@@ -163,7 +163,7 @@ defeat them all"
 
 ;; now solve the puzzle!
 (time (format t "The answer to EC Quest 01 Part 1 is ~a"
-              (q01-1 (uiop:read-file-string *data-file1*))))
+              (q01-1 (uiop:read-file-string *data-file*))))
 
 (time (format t "The answer to EC Quest 01 Part 2 is ~a"
 	      (q01-2 (uiop:read-file-string *data-file2*))))
@@ -178,22 +178,20 @@ defeat them all"
 ;; The answer to EC Quest 01 Part 1 is 1322
 ;; Evaluation took:
 ;; 0.000 seconds of real time
-;; 0.000136 seconds of total run time (0.000077 user, 0.000059 system)
+;; 0.000112 seconds of total run time (0.000059 user, 0.000053 system)
 ;; 100.00% CPU
-;; 54,000 bytes consed
+;; 42,736 bytes consed
 
 ;; The answer to EC Quest 01 Part 2 is 5584
 ;; Evaluation took:
 ;; 0.000 seconds of real time
-;; 0.000181 seconds of total run time (0.000116 user, 0.000065 system)
+;; 0.000154 seconds of total run time (0.000103 user, 0.000051 system)
 ;; 100.00% CPU
-;; 111,120 bytes consed
+;; 112,000 bytes consed
 
 ;; The answer to EC Quest 01 Part 3 is 27848
 ;; Evaluation took:
-;; 0.003 seconds of real time
-;; 0.003470 seconds of total run time (0.003061 user, 0.000409 system)
-;; [ Real times consist of 0.002 seconds GC time, and 0.001 seconds non-GC time. ]
-;; [ Run times consist of 0.002 seconds GC time, and 0.002 seconds non-GC time. ]
+;; 0.000 seconds of real time
+;; 0.000500 seconds of total run time (0.000439 user, 0.000061 system)
 ;; 100.00% CPU
-;; 446,624 bytes consed
+;; 479,408 bytes consed
