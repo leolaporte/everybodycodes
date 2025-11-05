@@ -31,17 +31,22 @@
   "Downloaded problem set")
 
 #| ----------------------------------------------------------------------------
-                   Quest 2: From Complex to Clarity
-                           --- Part One ---
+Quest 2: From Complex to Clarity
+--- Part One ---
 
-LEO'S NOTES: Why this is just simple arithmetic. I'll create a
-function for each of the "complex" operations then just do the
-math.
+LEO'S NOTES: Why this is just simple arithmetic. I'll create
+overloaded arithmetic functions for each of the "complex" operations
+then just do the math.
 
+Repeat three times:
 1. Start with (0 0)
-2. Multiply it by itself
-3. Divide the result by (10 10)
-4. Add input to the result
+2. COMPLEX-MULTIPLY it by itself
+3. COMPLEX-DIVIDE the result by (10 10)
+4. COMPLEX-ADD input to the result
+
+Here's an opportunity to use Serapeum's ~> threading macro (ala
+Clojure and Racket). I know it's not stock CL but I think the code is
+clearer.
 
 I guess I'll also get in the habit of creating a separate PARSE
 function for the provided data.
@@ -107,10 +112,10 @@ tranformation prescribed in the problem set to produce a result"
 
     (dotimes (i 3) ; repeat three times
       (setf res
-            (sr:~> res         ; clojure style threading (needle is res)
+            (sr:~> res       ; clojure style threading (needle _ is res)
                    (complex-multiply _ _)       ; multiply res by itself
-                   (complex-divide _ '(10 10))  ; add to [10,10]
-                   (complex-add a _))))         ; add input to res
+                   (complex-divide _ '(10 10))  ; divide by [10,10]
+                   (complex-add _ a))))         ; add input to res
 
     (format nil "[~a,~a]" (first res) (second res)))) ; reformat to string
 
