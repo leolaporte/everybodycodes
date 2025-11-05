@@ -5,7 +5,7 @@
 ;;;; Finished: 04 Nov 2025 at 21:21
 
 ;; ----------------------------------------------------------------------------
-;; Prologue code for setup - same every day
+;; Prologue code for setup
 ;; ----------------------------------------------------------------------------
 
 (defpackage :ec.2025.quest01
@@ -33,11 +33,10 @@
 #| ----------------------------------------------------------------------------
                            --- Part One ---
 
-LEO'S NOTES: I'm to figure out my name by following the moves in the
-third line of the input moving through the first line of the
+LEO'S NOTES: I'm to figure out my dragon name by following the moves
+in the third line of the input moving through the first line of the
 input (ignore line 2). The only trick is that if a move would take you
-off the end of the list, you stop at the end and go to the next
-move.
+off the end of the list, you stop at the end and go to the next move.
 
 I'll need one function MOVE that gets the current POS and the MOVE and
 returns the new POS. Oh and it will need the max legal position,
@@ -136,7 +135,7 @@ backward and forward, using the provided moves"
   (5a:is (equalp "Elarzris" (quest01-2 *example2*))))
 
 #| ----------------------------------------------------------------------------
---- Part Three ---
+                          --- Part Three ---
 
 LEO's NOTES: Now, instead of moving, the move list indicates which
 names in the list to swap. Return the 0th name. I can reuse
