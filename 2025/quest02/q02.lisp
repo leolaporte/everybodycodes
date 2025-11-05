@@ -51,12 +51,15 @@ clearer.
 I guess I'll also get in the habit of creating a separate PARSE
 function for the provided data.
 
-Also, with the COMPLEX-DIVIDE use TRUNCATE not FLOOR because it always
-truncates toward zero, which is needed for negative inputs.
+Also, with the COMPLEX-DIVIDE use TRUNCATE not FLOOR because TRUNCATE
+truncates toward zero, which is needed for negative
+inputs. Fortunately I wrote tests which revealed the issue. Moral:
+Even so-called trivial functions should have tests.
 
 ---------------------------------------------------------------------------- |#
 
-(defparameter *example1* "A=[25,9]")
+(defparameter *example1* "A=[25,9]"
+  "provided example data")
 
 (sr:-> parse-input (string) list)
 (defun parse-input (input)
@@ -92,7 +95,8 @@ truncates toward zero, which is needed for negative inputs.
 
 (sr:-> complex-divide (list list) list)
 (defun complex-divide (pair1 pair2)
-  "[X1,Y1] / [X2,Y2] = [X1 / X2, Y1 / Y2] using floor to ignore the remainder"
+  "[X1,Y1] / [X2,Y2] = [X1 / X2, Y1 / Y2] using truncate to ignore the
+remainder"
 
   (list
    (truncate (first pair1) (first pair2))     ; use truncate to round
