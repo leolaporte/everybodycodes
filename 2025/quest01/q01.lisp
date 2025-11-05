@@ -31,6 +31,7 @@
   "Downloaded problem set")
 
 #| ----------------------------------------------------------------------------
+                    Quest 1: Whispers in the Shell
                            --- Part One ---
 
 LEO'S NOTES: I'm to figure out my dragon name by following the moves
