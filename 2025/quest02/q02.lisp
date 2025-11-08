@@ -219,24 +219,27 @@ bad - less than 3 seconds on my M2 Macbook Air.)
 ;; The answer to EC Quest 2 Part 1 is [421180,913532]
 ;; Evaluation took:
 ;; 0.000 seconds of real time
-;; 0.000250 seconds of total run time (0.000107 user, 0.000143 system)
+;; 0.000176 seconds of total run time (0.000168 user, 0.000008 system)
 ;; 100.00% CPU
+;; 522,840 processor cycles
 ;; 0 bytes consed
 
 ;; The answer to EC Quest 2 Part 2 is 683
 ;; Evaluation took:
-;; 0.025 seconds of real time
-;; 0.025850 seconds of total run time (0.025276 user, 0.000574 system)
-;; [ Real times consist of 0.001 seconds GC time, and 0.024 seconds non-GC time. ]
-;; [ Run times consist of 0.001 seconds GC time, and 0.025 seconds non-GC time. ]
-;; 104.00% CPU
-;; 47,822,272 bytes consed
+;; 0.013 seconds of real time
+;; 0.012159 seconds of total run time (0.012159 user, 0.000000 system)
+;; [ Real times consist of 0.002 seconds GC time, and 0.011 seconds non-GC time. ]
+;; [ Run times consist of 0.001 seconds GC time, and 0.012 seconds non-GC time. ]
+;; 92.31% CPU
+;; 36,102,030 processor cycles
+;; 47,896,960 bytes consed
 
 ;; The answer to EC Quest 2 Part 3 is 65623
 ;; Evaluation took:
-;; 2.401 seconds of real time
-;; 2.428095 seconds of total run time (2.380647 user, 0.047448 system)
-;; [ Real times consist of 0.125 seconds GC time, and 2.276 seconds non-GC time. ]
-;; [ Run times consist of 0.125 seconds GC time, and 2.304 seconds non-GC time. ]
-;; 101.12% CPU
-;; 4,705,041,184 bytes consed
+;; 1.189 seconds of real time
+;; 1.176572 seconds of total run time (1.166274 user, 0.010298 system)
+;; [ Real times consist of 0.091 seconds GC time, and 1.098 seconds non-GC time. ]
+;; [ Run times consist of 0.097 seconds GC time, and 1.080 seconds non-GC time. ]
+;; 98.99% CPU
+;; 3,561,179,340 processor cycles
+;; 4,705,006,496 bytes consed

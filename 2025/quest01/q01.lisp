@@ -197,20 +197,23 @@ of moves, perform all the moves and return the 0th dragon names"
 ;; The answer to EC Quest 1 Part 1 is Caeldax
 ;; Evaluation took:
 ;; 0.000 seconds of real time
-;; 0.000132 seconds of total run time (0.000031 user, 0.000101 system)
+;; 0.000081 seconds of total run time (0.000078 user, 0.000003 system)
 ;; 100.00% CPU
+;; 240,660 processor cycles
 ;; 0 bytes consed
 
 ;; The answer to EC Quest 1 Part 2 is Zorfal
 ;; Evaluation took:
 ;; 0.000 seconds of real time
-;; 0.000081 seconds of total run time (0.000023 user, 0.000058 system)
+;; 0.000026 seconds of total run time (0.000026 user, 0.000000 system)
 ;; 100.00% CPU
+;; 76,440 processor cycles
 ;; 0 bytes consed
 
 ;; The answer to EC Quest 1 Part 3 is Xaralquin
 ;; Evaluation took:
 ;; 0.000 seconds of real time
-;; 0.000056 seconds of total run time (0.000025 user, 0.000031 system)
+;; 0.000028 seconds of total run time (0.000028 user, 0.000000 system)
 ;; 100.00% CPU
+;; 82,170 processor cycles
 ;; 0 bytes consed
