@@ -18,6 +18,7 @@
 
 (in-package :ec.2025.quest03)
 
+
 (setf 5a:*run-test-when-defined* t)  ; test as we go
 (sr:toggle-pretty-print-hash-table)  ; pretty print for hashes
 (declaim (optimize (debug 3)))       ; max debugging info
