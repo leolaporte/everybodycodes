@@ -89,7 +89,7 @@ one another"
     (apply #'+ (pack-crate crates)))) ; add up crate sizes
 
 (5a:test quest03-1-test
-  (5a:is (= (quest03-1 *example1*))))
+  (5a:is (= 29 (quest03-1 *example1*))))
 
 #| ----------------------------------------------------------------------------
                            --- Part Two ---
