@@ -8,7 +8,7 @@
 ;; Prologue code for setup - same every day
 ;; ----------------------------------------------------------------------------
 ;; Pre-loaded in .sbclrc:
-;; (ql:quickload '(:fiveam :iterate :cl-ppcre :trivia :serapeum :str))
+;; (ql:quickload '(:fiveam :iterate :cl-ppcre :trivia :alexandria :serapeum :str))
 
 (defpackage :ec.2024.quest02
   (:use  #:cl :alexandria :iterate)
