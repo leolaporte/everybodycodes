@@ -7,8 +7,6 @@
 ;; ----------------------------------------------------------------------------
 ;; Prologue code for setup - same every day
 ;; ----------------------------------------------------------------------------
-;; Pre-loaded in .sbclrc:
-;; (ql:quickload '(:fiveam :iterate :cl-ppcre :trivia :alexandria :serapeum :str))
 
 (defpackage :ec.2024.quest02
   (:use  #:cl :alexandria :iterate)
@@ -34,6 +32,7 @@
   "Downloaded problem set")
 
 #| ----------------------------------------------------------------------------
+Quest 2: The Runes of Power
 --- Part One ---
 
 "Your task is to count all the runic words within the inscription on
