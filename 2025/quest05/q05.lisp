@@ -2,7 +2,7 @@
 ;;;; 2025 Everybody Codes solution
 ;;;; Leo Laporte
 ;;;; Started: 12 Nov 2025 at 13:29
-;;;; Finished:
+;;;; Finished: 17 Nov 2025 at 15:39
 
 ;; ----------------------------------------------------------------------------
 ;;;; Prologue code for setup - same every day
@@ -194,7 +194,7 @@ each and return the difference between the strongest and the weakest"
   (5a:is (= 77053 (quest05-2 *example2*))))
 
 ;; ----------------------------------------------------------------------------
-;; --- Part Three ---
+;;                                --- Part Three ---
 
 ;; LEO'S NOTES: So now I need to save sword id, strength, and the
 ;; fishbone itself so that I can resolve ties by checking up the
@@ -290,7 +290,7 @@ product of each sword's strength rank and identifier"
   (let ((swords (iter (for s in input) ; make a list of all sword structs
                   (collect (parse-sword s)))))
 
-    (setf swords (sort swords #'>sword?))
+    (setf swords (sort swords #'>sword?)) ; using the special sword sort
 
     ;; calculate the sum of the product of rank and id
     (iter (for rank below (length swords))
