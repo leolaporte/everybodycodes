@@ -66,7 +66,6 @@
 (defstruct sword
   "info for a given sword"
   (id nil :type (or null integer))        ; the sword's ID
-  (rank nil :type (or null integer))      ; strength rank (see part 3)
   (strength nil :type (or null integer))  ; strength, calculated from fishbone
   (fishbone nil :type (or null array)))   ; an array of fishbone SEGMENT
 
@@ -290,7 +289,7 @@ product of each sword's strength rank and identifier"
   (let ((swords (iter (for s in input) ; make a list of all sword structs
                   (collect (parse-sword s)))))
 
-    (setf swords (sort swords #'>sword?)) ; using the special sword sort
+    (setf swords (sort swords #'>sword?)) ; rank using the special sort
 
     ;; calculate the sum of the product of rank and id
     (iter (for rank below (length swords))
