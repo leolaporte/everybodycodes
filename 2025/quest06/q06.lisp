@@ -137,6 +137,11 @@ mentees, return the number of possible matchups"
 ;; Once I count the middle ranges (and multiply the counts times the
 ;; range minus 2) I count the leftmost and rightmost ranges once, add
 ;; it all up and that's the total number of matches.
+                                        ;
+;;
+;; Oh and a little teensy bug hung me up for a while. The Common Lisp
+;; COUNT function treats the end as exclusive. I was thinking it was
+;; inclusive. So the one off bit me after all.
 ;; ----------------------------------------------------------------------------
 
 (defparameter *example2* "AABCBABCABCabcabcABCCBAACBCa")
@@ -153,14 +158,14 @@ return the number of mentors within the range(s)"
   (loop for r in ranges    ; iter has a conflct with COUNT - use LOOP
         summing
         (count (char-upcase mentee)
-               (subseq garrison-map (first r) (second r)))))
+               garrison-map :start (first r) :end (1+ (second r)))))
 
 (5a:test count-matches-test
   (5a:is (= 7 (count-matches #\a *example2*
-                             (list (list 0 (length *example2*))))))
+                             (list (list 0 (1- (length *example2*)))))))
   (5a:is (= 4 (count-matches #\a *example2* (list (list 0 16)))))
   (5a:is (= 0 (count-matches #\a *example2* (list (list 9 16)))))
-  (5a:is (= 7 (count-matches #\a *example2* (list (list 0 10) (list 16 28))))))
+  (5a:is (= 7 (count-matches #\a *example2* (list (list 0 10) (list 16 27))))))
 
 (sr:-> set-middle-range (fixnum fixnum fixnum) list)
 (defun set-middle-range (posn range len)
@@ -172,87 +177,90 @@ segments of the map that do not wrap (first and last)"
 
     ;; now compensate for ranges that go off the string
     ;; in these cases I'll return two ranges in the list
-    (cond ((< start 0)                    ; underflow
-           (list (list 0 end)             ; first chunk at left
+    (cond ((< start 0)                           ; underflow
+           (list (list 0 end)                    ; first chunk at left
                  (list (+ len start) (1- len)))) ; second chunk at right
 
-          ((> end (1- len))             ; overflow
-           (list (list start (1- len))  ; right chunk
+          ((> end (1- len))               ; overflow
+           (list (list start (1- len))    ; right chunk
                  (list 0 (mod end len)))) ; left chunk
 
           ;; all within range, so just return unadjusted start and end
           (t (list (list start end))))))  ; all in range
 
 (5a:test set-middle-range-test
-  (5a:is (equalp (list (list 1 21)) (set-middle-range 11 10 28)))
-  (5a:is (equalp (list (list 0 15) (list 23 27)) (set-middle-range 5 10 28)))
-  (5a:is (equalp (list (list 15 27) (list 0 7)) (set-middle-range 25 10 28)))
-  (5a:is (equalp (list (list 0 20)) (set-middle-range 10 10 28)))
-  (5a:is (equalp (list (list 0 1010) (list 9010 9999))
-                 (set-middle-range 10 1000 10000)))
-  (5a:is (equalp (list (list 8910 9999) (list 0 910))
-                 (set-middle-range 9910 1000 10000)))
-  (5a:is (equalp (list (list 0 10) (list 90 99))
-                 (set-middle-range 0 10 100)))
-  (5a:is (equalp (list (list 89 99) (list 0 9))
-                 (set-middle-range 99 10 100))))
+  (5a:is (equalp (set-middle-range 11 10 28)
+                 (list (list 1 21))))
+  (5a:is (equalp (set-middle-range 5 10 28)
+                 (list (list 0 15) (list 23 27))))
+  (5a:is (equalp (set-middle-range 25 10 28)
+                 (list (list 15 27) (list 0 7))))
+  (5a:is (equalp (set-middle-range 10 10 28)
+                 (list (list 0 20))))
+  (5a:is (equalp (set-middle-range 10 1000 10000)
+                 (list (list 0 1010) (list 9010 9999))))
+  (5a:is (equalp (set-middle-range 9910 1000 10000)
+                 (list (list 8910 9999) (list 0 910))))
+  (5a:is (equalp (set-middle-range 0 10 100)
+                 (list (list 0 10) (list 90 99))))
+  (5a:is (equalp (set-middle-range 99 10 100)
+                 (list (list 89 99) (list 0 9)))))
 
 (sr:-> quest06-3 (string fixnum fixnum) fixnum)
 (defun quest06-3 (input range repeats)
   "given a string representing the garrison map, INPUT, the distance in
 each direction from a mentee to search, RANGE, and the number of times
 the input pattern repeats, REPEATS, return the total number of
-possible mentor/mentee matches - this is a two step process. First we
+possible mentor/mentee matches - this is a three step process. First we
 count the number of matches for the map segments that have matching
 maps on both sides (there are (- range 2) of those), then we count the
 first segment which has a repeat on the right only, and the last
 segment, which has a repeat on the left only. This method saves
 considerable time over brute force because we only have to walk the
 map three times, instead of REPEATS times"
-  (let* ((len (length input))           ; length of single map string
-         (match-hash (make-hash-table)))
+  (let ((len (length input))            ; length of single map string
+        (left-hash (make-hash-table))
+        (middle-hash (make-hash-table))
+        (right-hash (make-hash-table)))
 
-    ;; count matches in the middle (- range 2) strings
+    ;; count matches in the middle strings
     (iter (for i below len)
       (let ((c (char input i)))         ; walk the garrison map
         (when (lower-case-p c)          ; it's a mentee
-          (setf (gethash i match-hash)  ; save matches for this mentee
-                (* (- repeats 2)        ; number of repeats in middle
-                   (count-matches c input
-                                  (set-middle-range i range len)))))))
+          (setf (gethash i middle-hash) ; save matches for this mentee
+                (count-matches c input
+                               (set-middle-range i range len))))))
 
-    ;; add matches for the first segment
+    ;; add matches for the leftmost segment
     (iter (for i below len)
       (let ((c (char input i)))
         (when (lower-case-p c)
-          (let ((matches
-                  (if (< (- i range) 0) ;off to the left
-                      (count-matches c input
-                                     (list (list 0 (+ i range))))
-                      ;;else
-                      (count-matches c input
-                                     (set-middle-range i range len)))))
+          (setf (gethash i left-hash)
+                (if (< (- i range) 0)   ;off to the left
+                    (count-matches c input
+                                   (list (list 0 (+ i range))))
+                    ;;else already know this so just add it again
+                    (gethash i middle-hash))))))
 
-            ;; add this leftmost segment to the totals
-            (setf (gethash i match-hash) (+ matches (gethash i match-hash)))))))
-
-    ;; add matches for the last segment
+    ;; add matches for the rightmost segment
     (iter (for i below len)
       (let ((c (char input i)))
         (when (lower-case-p c)
-          (let ((matches
-                  (if (> (+ i range) (1- len)) ; off to the right?
-                      (count-matches c input
-                                     (list (list (- i range) (1- len))))
-
-                      ;; else
-                      (count-matches c input
-                                     (set-middle-range i range len)))))
-
-            (setf (gethash i match-hash) (+ matches (gethash i match-hash)))))))
+          (setf (gethash i right-hash)
+                (if (> (+ i range) (1- len)) ; off to the right?
+                    (count-matches c input
+                                   (list (list (- i range) (1- len))))
+                    ;; else re-use existing amount
+                    (gethash i middle-hash))))))
 
     ;; add up all the matches and return
-    (apply #'+ (hash-table-values match-hash))))
+    (+ (apply #'+ (hash-table-values left-hash))
+       (apply #'+ (hash-table-values right-hash))
+       (* (- repeats 2) (apply #'+ (hash-table-values middle-hash))))))
+
+(5a:test quest06-3-test
+  (5a:is (= 72 (quest06-3 *example2* 10 2)))
+  (5a:is (= 34 (quest06-3 *example2* 10 1))))
 
 ;; ----------------------------------------------------------------------------
 
@@ -269,3 +277,24 @@ map three times, instead of REPEATS times"
 ;; ----------------------------------------------------------------------------
 ;; Timings with SBCL on Framework Desktop w/ AMD AI Max+ 395, 128GB RAM
 ;; ----------------------------------------------------------------------------
+
+;; The answer to EC Quest 6 Part 1 is 159
+;; Evaluation took:
+;; 0.000 seconds of real time
+;; 0.000103 seconds of total run time (0.000043 user, 0.000060 system)
+;; 100.00% CPU
+;; 65,472 bytes consed
+
+;; The answer to EC Quest 6 Part 2 is 4010
+;; Evaluation took:
+;; 0.000 seconds of real time
+;; 0.000225 seconds of total run time (0.000195 user, 0.000030 system)
+;; 100.00% CPU
+;; 195,168 bytes consed
+
+;; The answer to EC Quest 6 Part 3 is 1663540863
+;; Evaluation took:
+;; 0.070 seconds of real time
+;; 0.070323 seconds of total run time (0.070067 user, 0.000256 system)
+;; 100.00% CPU
+;; 1,982,416 bytes consed
