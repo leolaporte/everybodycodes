@@ -137,7 +137,6 @@ mentees, return the number of possible matchups"
 ;; Once I count the middle ranges (and multiply the counts times the
 ;; range minus 2) I count the leftmost and rightmost ranges once, add
 ;; it all up and that's the total number of matches.
-                                        ;
 ;;
 ;; Oh and a little teensy bug hung me up for a while. The Common Lisp
 ;; COUNT function treats the end as exclusive. I was thinking it was
